@@ -30,5 +30,16 @@ app.post('/relay', async (req, res) => {
 // 상태 확인용 (브라우저로 접속하면 이게 떠야 정상)
 app.get('/', (req, res) => res.send('relay ok'));
 
+// 실제 발신 IP 확인용 (문제 진단용)
+app.get('/whatismyip', async (req, res) => {
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    const data = await r.json();
+    res.json(data);
+  } catch (err) {
+    res.status(500).json({ error: err.toString() });
+  }
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log('listening on ' + PORT));
